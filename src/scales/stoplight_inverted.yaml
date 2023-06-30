@@ -1,0 +1,9 @@
+name: Stoplight Inverted
+type: relative
+steps:
+  - value: 0
+    color: "#cf0000"
+  - value: 0.5
+    color: "#fde74c"
+  - value: 1
+    color: "#6d9b17"

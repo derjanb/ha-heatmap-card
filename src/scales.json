@@ -178,6 +178,38 @@
     "type": "relative"
   },
   {
+    "device_class": "humidity",
+    "documentation": {
+      "text": "<p>This heatmap color map reflects indoor humidity levels. Ideal comfort\nconditions are typically found between 40% to 60% humidity. Remember,\ncomfort can vary based on location, season, and personal preferences.</p>"
+    },
+    "key": "humidity",
+    "name": "Humidity",
+    "steps": [
+      {
+        "color": "#cf0000",
+        "value": 10
+      },
+      {
+        "color": "#fde74c",
+        "value": 30
+      },
+      {
+        "color": "#6d9b17",
+        "value": 50
+      },
+      {
+        "color": "#4a569e",
+        "value": 70
+      },
+      {
+        "color": "#0f3489",
+        "value": 90
+      }
+    ],
+    "type": "absolute",
+    "unit": "%"
+  },
+  {
     "device_class": "temperature",
     "documentation": {
       "text": "<p>Indoor temperatures related to human comfort levels. Amalgation\nof multiple sources. As always with temperature, individual\nfactors such as generics, clothing and activity level have a big\nimpact.</p>"
@@ -356,6 +388,52 @@
       }
     ],
     "type": "relative"
+  },
+  {
+    "key": "stoplight inverted",
+    "name": "Stoplight Inverted",
+    "steps": [
+      {
+        "color": "#cf0000",
+        "value": 0
+      },
+      {
+        "color": "#fde74c",
+        "value": 0.5
+      },
+      {
+        "color": "#6d9b17",
+        "value": 1
+      }
+    ],
+    "type": "relative"
+  },
+  {
+    "device_class": "volatile_organic_compounds",
+    "documentation": {
+      "text": "<p>VOC (Volatile Organic Compounds) levels represent the concentration of\ncertain chemicals in the air. High VOC levels suggest poor indoor air\nquality and can be caused by many sources, such as cleaning supplies,\npaint, and furnishings.</p>\n<p>The specific effects of VOC exposure can vary greatly from person to\nperson, but high levels can cause symptoms like headaches, dizziness,\nand even long-term health effects. Many studies suggest that keeping\nVOC levels under 200 \u03bcg/m\u00b3 can mitigate these effects, although this\nis not a strict limit.</p>\n<p>Levels over 500 \u03bcg/m\u00b3 are often associated with more severe health\neffects in various studies. However, there is no universally agreed\nupon threshold for dangerous VOC levels.</p>\n<p>This scale caps at 1000 \u03bcg/m\u00b3, as this level would suggest very poor\nindoor air quality. Extreme VOC levels, such as those over 5000 \u03bcg/m\u00b3,\nare indicative of a severe lack of ventilation and are associated with\nmajor health risks, although such high levels are not typically\nencountered in residential settings.</p>"
+    },
+    "key": "volatile organic compounds",
+    "name": "VOC, indoor exposure",
+    "steps": [
+      {
+        "color": "#6d9b17",
+        "value": 50
+      },
+      {
+        "color": "#FFBF00",
+        "value": 300
+      },
+      {
+        "color": "#cf0000",
+        "value": 500
+      },
+      {
+        "color": "#5b0f8c",
+        "value": 1000
+      }
+    ],
+    "type": "absolute"
   },
   {
     "key": "white hot",

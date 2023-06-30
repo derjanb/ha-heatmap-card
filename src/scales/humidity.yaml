@@ -1,0 +1,20 @@
+name: Humidity
+type: absolute
+device_class: humidity
+unit: "%"
+steps:
+  - value: 10
+    color: "#cf0000"
+  - value: 30
+    color: "#fde74c"
+  - value: 50
+    color: "#6d9b17"
+  - value: 70
+    color: "#4a569e"
+  - value: 90
+    color: "#0f3489"
+documentation:
+  text: |
+    This heatmap color map reflects indoor humidity levels. Ideal comfort
+    conditions are typically found between 40% to 60% humidity. Remember,
+    comfort can vary based on location, season, and personal preferences.

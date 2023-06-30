@@ -1,0 +1,34 @@
+name: VOC, indoor exposure
+type: absolute
+device_class: volatile_organic_compounds
+steps:
+  - value: 50
+    color: "#6d9b17"
+  - value: 300
+    color: "#FFBF00"
+  - value: 500
+    color: "#cf0000"
+  - value: 1000
+    color: "#5b0f8c"
+documentation:
+  text: |
+    VOC (Volatile Organic Compounds) levels represent the concentration of
+    certain chemicals in the air. High VOC levels suggest poor indoor air
+    quality and can be caused by many sources, such as cleaning supplies,
+    paint, and furnishings.
+
+    The specific effects of VOC exposure can vary greatly from person to
+    person, but high levels can cause symptoms like headaches, dizziness,
+    and even long-term health effects. Many studies suggest that keeping
+    VOC levels under 200 μg/m³ can mitigate these effects, although this
+    is not a strict limit.
+
+    Levels over 500 μg/m³ are often associated with more severe health
+    effects in various studies. However, there is no universally agreed
+    upon threshold for dangerous VOC levels.
+
+    This scale caps at 1000 μg/m³, as this level would suggest very poor
+    indoor air quality. Extreme VOC levels, such as those over 5000 μg/m³,
+    are indicative of a severe lack of ventilation and are associated with
+    major health risks, although such high levels are not typically
+    encountered in residential settings.

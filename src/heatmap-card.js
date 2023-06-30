@@ -358,7 +358,7 @@ export class HeatmapCard extends LitElement {
             const dateRep = start.toLocaleDateString(this.meta.language, {month: 'short', day: '2-digit'});
 
             if (dateRep !== prevDate && (prevDate !== null || limitedData)) {
-                gridTemp = Array(24 * this.period.steps).fill(null);
+                gridTemp = Array(stepsPerDay).fill(null);
                 grid.push({'date': dateRep, 'nativeDate': start, 'vals': gridTemp});
             }
             gridTemp[step] = entry.mean;

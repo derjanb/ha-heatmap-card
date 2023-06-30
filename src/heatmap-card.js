@@ -71,7 +71,7 @@ export class HeatmapCard extends LitElement {
         if (this.grid === undefined) { this.grid = []; }
 
         return html`
-            <ha-card header="${this.meta.title}" id="card">
+            <ha-card header="${this.meta.title}" id="card" @click=${e => e.target && e.target.id == 'card' && this.handlePopup(e, this.config.entity)}>
                 <div class="card-content">
                     <table>
                         <thead>
@@ -537,6 +537,13 @@ export class HeatmapCard extends LitElement {
     }
 
     static styles = css`
+            #card {
+                cursor: pointer;
+            }
+            #card > * {
+                cursor: default;
+            }
+
             /* Heatmap table */
             table {
                 border: none;
@@ -672,5 +679,16 @@ export class HeatmapCard extends LitElement {
 
     static getConfigElement() {
         return document.createElement("heatmap-card-editor");
+    }
+
+    handlePopup(e, entityId) {
+        e.stopPropagation();
+        const event = new Event("hass-more-info", {
+            composed: !0
+        });
+        event.detail = {
+            entityId
+        },
+        this.dispatchEvent(event);
     }
 }

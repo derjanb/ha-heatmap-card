@@ -342,7 +342,7 @@
   {
     "device_class": "pm25",
     "documentation": {
-      "text": "<p>This scale is based on an aggregate of the World Health Organization\n<a href=\"https://www.who.int/publications/i/item/9789240034228\" rel=\"noopener\" target=\"_blank\">global air quality guidelines</a> \nand <a href=\"https://www.who.int/publications/i/item/9789240000278\" rel=\"noopener\" target=\"_blank\">Personal interventions and risk communication on Air Pollution</a>\nreports.</p>\n<p>The lowest part of the range map to the AQG (Air Quality Goal)\ntarget, a PM<sub>2.5</sub> level of &lt;5 \u03bcg/m<sup>3</sup> which is considered relatively safe.\nThe upper part, &gt;100 \u03bcg/m<sup>3</sup>, is considered the level where the \nhealth benefits of regular physical activity is greatly offset by the\nPM<sub>2.5</sub> exposure.</p>\n<p>Note that the level of &lt;5 \u03bcg/m<sup>3</sup> is the AQG exposure\nlevel on an annaul basis. The WHO also has a 24-hour AQG level of\n&lt;15 \u03bcg/m<sup>3</sup> which is not included in this scale. As we're\ntrending patterns over time, the annual target made more sense for\nthe heatmap.</p>"
+      "text": "<p>This scale is based on an aggregate of the World Health Organization\n<a href=\"https://www.who.int/publications/i/item/9789240034228\" rel=\"noopener\" target=\"_blank\">global air quality guidelines</a>\nand <a href=\"https://www.who.int/publications/i/item/9789240000278\" rel=\"noopener\" target=\"_blank\">Personal interventions and risk communication on Air Pollution</a>\nreports.</p>\n<p>The lowest part of the range map to the AQG (Air Quality Goal)\ntarget, a PM<sub>2.5</sub> level of &lt;5 \u03bcg/m<sup>3</sup> which is considered relatively safe.\nThe upper part, &gt;100 \u03bcg/m<sup>3</sup>, is considered the level where the\nhealth benefits of regular physical activity is greatly offset by the\nPM<sub>2.5</sub> exposure.</p>\n<p>Note that the level of &lt;5 \u03bcg/m<sup>3</sup> is the AQG exposure\nlevel on an annaul basis. The WHO also has a 24-hour AQG level of\n&lt;15 \u03bcg/m<sup>3</sup> which is not included in this scale. As we're\ntrending patterns over time, the annual target made more sense for\nthe heatmap.</p>"
     },
     "key": "pm25",
     "name": "PM2.5 (WHO aggregate)",
@@ -363,7 +363,7 @@
       },
       {
         "color": "#5b0f8c",
-        "legends": "Risk level",
+        "legend": "Risk level",
         "value": 100
       }
     ],

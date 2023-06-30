@@ -87,7 +87,10 @@ export class HeatmapCard extends LitElement {
                             ${entry.vals.map((util, idx) => {
                                 var css_class="hm-box";
                                 var r = util;
-                                if (r === null) { css_class += " null"; }
+                                if (r === null) {
+                                    var klass = " " + (this.meta.null_as_0 ? "null-as-0" : "null");
+                                    css_class += klass;
+                                }
                                 if (this.meta.scale.type === 'relative') {
                                     const diff = this.meta.data.max - this.meta.data.min
                                     r = (util - this.meta.data.min) / diff;
@@ -346,13 +349,15 @@ export class HeatmapCard extends LitElement {
         var prevDate = null;
         var step;
         var interval = Math.round(60 / this.period.steps);
+        var stepsPerDay = 24 * this.period.steps;
+        const limitedData = consumerData.length < stepsPerDay;
 
         for (const entry of consumerData) {
             const start = new Date(entry.start);
             step = start.getHours() * this.period.steps + Math.round(start.getMinutes() / interval);
             const dateRep = start.toLocaleDateString(this.meta.language, {month: 'short', day: '2-digit'});
 
-            if (dateRep !== prevDate && prevDate !== null) {
+            if (dateRep !== prevDate && (prevDate !== null || limitedData)) {
                 gridTemp = Array(24 * this.period.steps).fill(null);
                 grid.push({'date': dateRep, 'nativeDate': start, 'vals': gridTemp});
             }
@@ -386,17 +391,20 @@ export class HeatmapCard extends LitElement {
         var prevDate = null;
         var step;
         var interval = Math.round(60 / this.period.steps);
+        var stepsPerDay = 24 * this.period.steps;
+
         if (this.meta.smoothing) {
             consumerData = this.smooth_consumer_data(consumerData);
         }
 
+        const limitedData = consumerData.length < stepsPerDay;
         for (const entry of consumerData) {
             const start = new Date(entry.start);
             step = start.getHours() * this.period.steps + Math.round(start.getMinutes() / interval);
             const dateRep = start.toLocaleDateString(this.meta.language, {month: 'short', day: '2-digit'});
 
-            if (dateRep !== prevDate && prev !== null) {
-                gridTemp = Array(24 * this.period.steps).fill(0);
+            if (dateRep !== prevDate && (prev !== null || limitedData)) {
+                gridTemp = Array(stepsPerDay).fill(0);
                 grid.push({'date': dateRep, 'nativeDate': start, 'vals': gridTemp});
             }
             if (prev !== null) {
@@ -483,7 +491,8 @@ export class HeatmapCard extends LitElement {
                 'min': this.config.data.min
             },
             'smoothing': this.config.smoothing,
-            'high_res': this.config.high_res
+            'high_res': this.config.high_res,
+            'null_as_0': this.config.null_as_0
         };
         return meta;
     }
@@ -509,7 +518,8 @@ export class HeatmapCard extends LitElement {
             'data': (config.data ?? {}),
             'display': (config.display ?? {}),
             'smoothing': (config.smoothing ?? false),
-            'high_res':  (config.high_res ?? false)
+            'high_res':  (config.high_res ?? false),
+            'null_as_0': (config.null_as_0 ?? false)
         };
         if (this.config.data.max !== undefined &&
             (this.config.data.max !== 'auto' &&
@@ -589,6 +599,9 @@ export class HeatmapCard extends LitElement {
                 margin: 3px;
                 position: relative;
                 box-shadow: 0px 0px 0px 7px rgba(0,0,0,1), 0px 0px 0px 8px rgba(255,255,255,1);
+            }
+            .null {
+                color: transparent !important;
             }
 
             /* Legend */

@@ -51,6 +51,9 @@ If for example your kWh energy sensor is 2 digit precision only but the average 
 
 <sup>* `total` and `total_increasing` sensors only</sup>
 
+_No Data as 0_
+
+Gaps are common with PV inverters, and it makes more sense to show this as 0 rather than potentially a lot of gaps in the graph that are really zero values. This enables this behavior.
 
 ## Configuration using YAML
 ### Minimal example

@@ -93,6 +93,7 @@ export class HeatmapCardEditor extends LitElement {
         this.scale = this.scales.get_scale(this._config.scale)
         this.smoothing = this._config.smoothing ?? 'false';
         this.high_res = this._config.high_res ?? 'false';
+        this.null_as_0 = this._config.null_as_0 ?? 'false';
 
         /* Once we have a scale, set the currently active tab to whatever matches it. */
         if (this.active_tab === undefined && this._config.scale) {
@@ -380,6 +381,14 @@ export class HeatmapCardEditor extends LitElement {
                     .disabled=${['total', 'total_increasing'].includes(this.entity?.attributes?.state_class) ? '' : 'disabled'}
                     .value=${"true"}
                     .configValue=${"smoothing"}
+                ></ha-checkbox>
+            </ha-formfield>
+            <ha-formfield .label=${"Treat no data as zero"} @change=${this.update_field}>
+                <ha-checkbox
+                    .label=${"Treat no data as zero"}
+                    .checked=${this._config.null_as_0 === 'true' }
+                    .value=${"true"}
+                    .configValue=${"null_as_0"}
                 ></ha-checkbox>
             </ha-formfield>
         </div>`

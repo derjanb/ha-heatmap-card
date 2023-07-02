@@ -5,12 +5,12 @@ unit: "%"
 steps:
   - value: 10
     color: "#cf0000"
-  - value: 30
-    color: "#fde74c"
+  - value: 40
+    color: "#f3e2de"
   - value: 50
-    color: "#6d9b17"
-  - value: 70
-    color: "#4a569e"
+    color: "#ffffff"
+  - value: 60
+    color: "#cfd6e7"
   - value: 90
     color: "#0f3489"
 documentation:

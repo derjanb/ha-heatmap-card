@@ -94,6 +94,7 @@ export class HeatmapCardEditor extends LitElement {
         this.smoothing = this._config.smoothing ?? 'false';
         this.high_res = this._config.high_res ?? 'false';
         this.null_as_0 = this._config.null_as_0 ?? 'false';
+        this.date_format_string = this._config.date_format_string ?? '';
 
         /* Once we have a scale, set the currently active tab to whatever matches it. */
         if (this.active_tab === undefined && this._config.scale) {
@@ -366,6 +367,16 @@ export class HeatmapCardEditor extends LitElement {
                 .configValue=${"title"}
                 @input=${this.update_field}
                 ></ha-textfield>
+            <ha-textfield
+                .label=${"Date format string"}
+                .placeholder=${''}
+                .type=${"string"}
+                .value=${this._config.date_format_string ?? ''}
+                .configValue=${"date_format_string"}
+                @input=${this.update_field}
+                .helper=${"Supported format codes: 'YYYY', 'YY', 'MMMM', 'MMM', 'MM', 'M', 'DD', 'D', 'dddd' and 'ddd'.\nDefaults to an empty string"}
+                .helperPersistent=${true}
+            ></ha-textfield>
             <ha-formfield .label=${"High resolution (usually only 10 days kept)"} @change=${this.update_field}>
                 <ha-checkbox
                     .label=${"High resolution"}

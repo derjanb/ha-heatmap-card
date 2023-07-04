@@ -342,6 +342,29 @@ export class HeatmapCard extends LitElement {
         return Math.min(...vals);
     }
 
+    format_date(date) {
+        const format = this.config.date_format_string || '';
+        const options = {
+            'YYYY': () => date.getFullYear(),
+            'YY': () => String(date.getFullYear()).slice(-2),
+            'MMMM': () => new Intl.DateTimeFormat(this.meta.language, { month: 'long' }).format(date),
+            'MMM': () => new Intl.DateTimeFormat(this.meta.language, { month: 'short' }).format(date),
+            'MM': () => String(date.getMonth() + 1).padStart(2, '0'),
+            'M': () => date.getMonth() + 1,
+            'DD': () => String(date.getDate()).padStart(2, '0'),
+            'D': () => date.getDate(),
+            'dddd': () => new Intl.DateTimeFormat(this.meta.language, { weekday: 'long' }).format(date),
+            'ddd': () => new Intl.DateTimeFormat(this.meta.language, { weekday: 'short' }).format(date)
+        };
+
+        if (!format) {
+            return date.toLocaleDateString(this.meta.language, { month: 'short', day: '2-digit' });
+        } else {
+            const regex = new RegExp(Object.keys(options).join('|'), 'g');
+            return format.replace(regex, matched => options[matched]());
+        }
+    }
+
     // Todo: cleanup and comment.
     calculate_measurement_values(consumerData) {
         var grid = [];
@@ -355,7 +378,7 @@ export class HeatmapCard extends LitElement {
         for (const entry of consumerData) {
             const start = new Date(entry.start);
             step = start.getHours() * this.period.steps + Math.round(start.getMinutes() / interval);
-            const dateRep = start.toLocaleDateString(this.meta.language, {month: 'short', day: '2-digit'});
+            const dateRep = this.format_date(start);
 
             if (dateRep !== prevDate && (prevDate !== null || limitedData)) {
                 gridTemp = Array(stepsPerDay).fill(null);
@@ -401,7 +424,7 @@ export class HeatmapCard extends LitElement {
         for (const entry of consumerData) {
             const start = new Date(entry.start);
             step = start.getHours() * this.period.steps + Math.round(start.getMinutes() / interval);
-            const dateRep = start.toLocaleDateString(this.meta.language, {month: 'short', day: '2-digit'});
+            const dateRep = this.format_date(start);
 
             if (dateRep !== prevDate && (prev !== null || limitedData)) {
                 gridTemp = Array(stepsPerDay).fill(0);
@@ -492,7 +515,8 @@ export class HeatmapCard extends LitElement {
             },
             'smoothing': this.config.smoothing,
             'high_res': this.config.high_res,
-            'null_as_0': this.config.null_as_0
+            'null_as_0': this.config.null_as_0,
+            'date_format_string': this.config.date_format_string
         };
         return meta;
     }
@@ -519,7 +543,8 @@ export class HeatmapCard extends LitElement {
             'display': (config.display ?? {}),
             'smoothing': (config.smoothing ?? false),
             'high_res':  (config.high_res ?? false),
-            'null_as_0': (config.null_as_0 ?? false)
+            'null_as_0': (config.null_as_0 ?? false),
+            'date_format_string': (config.date_format_string ?? ''),
         };
         if (this.config.data.max !== undefined &&
             (this.config.data.max !== 'auto' &&

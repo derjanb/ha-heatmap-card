@@ -65,6 +65,7 @@ export class HeatmapCard extends LitElement {
     }
     period = Periods[1];
     headers = [];
+    max_title_chars = 6;
 
     render() {
         // We may be trying to render before we've received the recorder data.
@@ -81,8 +82,9 @@ export class HeatmapCard extends LitElement {
                             </tr>
                         </thead>
                         <tbody>
-                    ${this.grid.map((entry, row) =>
-                        html`<tr>
+                    ${this.grid.map((entry, row) => {
+                        if (entry.date.length > this.max_title_chars) this.max_title_chars = entry.date.length;
+                        return html`<tr>
                             <td class="hm-row-title">${entry.date}</td>
                             ${entry.vals.map((util, idx) => {
                                 var css_class="hm-box";
@@ -101,12 +103,13 @@ export class HeatmapCard extends LitElement {
                                 return html`<td @click="${this.toggle_tooltip}" class="${css_class}" data-val="${util}" data-row="${row}" data-col="${idx}" style="color: ${col}"></td>`
                             })}
                         </tr>`
-                    )}
+                    })}
                         </tbody>
                     </table>
                     ${this.render_status()}
                     ${this.render_legend()}
                     ${this.render_tooltip()}
+                    <style>${this.render_dynamic_styles()}</style>
                 </div>
             </ha-card>
         `;
@@ -118,15 +121,34 @@ export class HeatmapCard extends LitElement {
             return html`
                 <th colspan="${this.period.steps}">12<br/>AM</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">4<br/>AM</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th>
                 <th colspan="${this.period.steps}">8<br/>AM</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">12<br/>PM</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th>
-                <th colspan="${this.period.steps}">4<br/>PM</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">8<br/>PM</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">11<br/>PM</th>
+                <th colspan="${this.period.steps}">4<br/>PM</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">8<br/>PM</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th>
+                <th colspan="${this.period.steps}">11<br/>PM</th>
             `
         } else {
             return html`
                 <th colspan="${this.period.steps}">00</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">04</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th>
                 <th colspan="${this.period.steps}">08</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">12</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th>
-                <th colspan="${this.period.steps}">16</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">20</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">23</th>
+                <th colspan="${this.period.steps}">16</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">20</th><th colspan="${this.period.steps}">·</th><th colspan="${this.period.steps}">·</th>
+                <th colspan="${this.period.steps}">23</th>
             `
         }
+    }
+
+    render_dynamic_styles() {
+        // calculate f to be 1 for max_title_chars <= 6 and to increate dynamically for higher values.
+        const f = Math.min(1, 6 / this.max_title_chars * 1.3);
+        const n = Math.floor(this.max_title_chars * f * 2) / 2;
+        const w = css([ n ]);
+        const scale = css([ (n / this.max_title_chars).toFixed(2) ]);
+        return css`
+            .hm-row-title {
+                width: ${w}ch;
+            }
+            td.hm-row-title {
+                transform: scale(${scale}, 1);
+                transform-origin: left;
+            }
+        `
     }
 
     render_status() {
@@ -190,6 +212,7 @@ export class HeatmapCard extends LitElement {
             in that we could snap this to more human friendly values such as integers, .5 and
             similar.
         */
+        const fixed = this.meta.data.max > 100 ? 0 : 2;
         var ticks = [];
         if (scale.type === 'relative') {
             // Figure out our own steps, this scale ranges from 0-1.
@@ -198,7 +221,7 @@ export class HeatmapCard extends LitElement {
                 ticks.push(
                     [
                         i * 20,
-                        +(Number(this.meta.data.min + (diff / 5) * i).toFixed(2))
+                        +(Number(this.meta.data.min + (diff / 5) * i).toFixed(fixed))
                     ]
                 )}
         } else {
@@ -354,7 +377,8 @@ export class HeatmapCard extends LitElement {
             'DD': () => String(date.getDate()).padStart(2, '0'),
             'D': () => date.getDate(),
             'dddd': () => new Intl.DateTimeFormat(this.meta.language, { weekday: 'long' }).format(date),
-            'ddd': () => new Intl.DateTimeFormat(this.meta.language, { weekday: 'short' }).format(date)
+            'ddd': () => new Intl.DateTimeFormat(this.meta.language, { weekday: 'short' }).format(date),
+            'dd': () => new Intl.DateTimeFormat(this.meta.language, { weekday: 'short' }).format(date).substring(0, 1)
         };
 
         if (!format) {
@@ -612,7 +636,7 @@ export class HeatmapCard extends LitElement {
                 text-align: left;
                 max-height: 20px;
                 min-width: 50px;
-                width: 50px;
+                white-space: nowrap;
             }
             .hm-box {
                 background-color: currentcolor;

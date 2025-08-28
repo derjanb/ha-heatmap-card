@@ -418,19 +418,19 @@
     "steps": [
       {
         "color": "#6d9b17",
-        "value": 50
+        "value": 250
       },
       {
         "color": "#FFBF00",
-        "value": 300
+        "value": 1000
       },
       {
         "color": "#cf0000",
-        "value": 500
+        "value": 2000
       },
       {
         "color": "#5b0f8c",
-        "value": 1000
+        "value": 5000
       }
     ],
     "type": "absolute"
